@@ -179,3 +179,6 @@ EOF'
         @chroot 'for service in bluetooth cups gdm NetworkManager ModemManager; do
             systemctl enable "$service"
         done'
+
+    @step "Enabling Bluetooth autostart..."
+        @chroot 'sed -e "s:#AutoEnable=false:AutoEnable=true:e" -i /etc/bluetooth/main.conf'
