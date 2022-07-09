@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euv
+set -euo pipefail
 
 function phase() {
     local message="$1"
@@ -63,6 +63,7 @@ phase "Configuring package manager..."
         sed -e "s/#Color/Color/g" -e "s/#ParallelDownloads = 5/ParallelDownloads = 4\nILoveCandy/g" -e "s/#[multilib]\n#/[multilib]\n/g" -i /etc/pacman.conf
 
     step "Copying local configuration to target..."
+        mkdir /mnt/etc /mnt/etc/pacman.d
         cp -fv /etc/pacman.conf /mnt/etc/pacman.conf
         cp -fv /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 
