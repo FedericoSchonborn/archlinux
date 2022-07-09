@@ -17,7 +17,7 @@ function @step() {
 function @chroot() {
     local script="$1"
 
-    arch-chroot /mnt "$script"
+    arch-chroot /mnt /bin/bash -c "$script"
 }
 
 @phase "Erasing disk..."
