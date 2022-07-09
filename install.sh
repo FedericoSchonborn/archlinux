@@ -12,9 +12,6 @@ function step() {
     echo -e " - $message"
 }
 
-phase "Setting up keyboard language..."
-    loadkeys la-latin1
-
 phase "Erasing disk..."
     step "Suspending into memory..."
     echo mem > /sys/power/state
@@ -22,13 +19,6 @@ phase "Erasing disk..."
     hdparm --security-set-pass eins /dev/sda
     step "Applying Security Erase (Enhanced) to disk..."
     hdparm --security-erase-enhanced eins /dev/sda
-
-phase "Connecting to network..."
-    step "Connecting to Wi-Fi..."
-        iwctl station wlan0 connect Telecentro-d160
-
-    step "Waiting for online status..."
-        sleep 5s
 
 phase "Creating disk partitions..."
     step "Creating new GPT partition table..."
