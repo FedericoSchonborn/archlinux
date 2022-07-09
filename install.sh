@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euv
+
 function phase() {
     local message="$1"
 
