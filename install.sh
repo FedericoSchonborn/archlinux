@@ -24,7 +24,7 @@ phase "Erasing disk..."
 
 phase "Creating disk partitions..."
     step "Creating new GPT partition table..."
-        sgdisk -o
+        sgdisk -o /dev/sda
 
     step "Creating boot partition..."
         sgdisk -n 0:0:+512MiB -t 0:ef00 /dev/sda
