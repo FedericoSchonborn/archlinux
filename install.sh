@@ -60,7 +60,7 @@ function @chroot() {
         reflector --country Chile --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
 
     @step "Setting up Pacman..."
-        sed -e "s/#Color/Color/g" -e "s/#ParallelDownloads = 5/ParallelDownloads = 4\nILoveCandy/g" -e "s/#[multilib]\n#/[multilib]\n/g" -i /etc/pacman.conf
+        nano /etc/pacman.conf
 
     @step "Copying local configuration to target..."
         mkdir -pv /mnt/etc /mnt/etc/pacman.d
