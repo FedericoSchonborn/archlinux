@@ -20,14 +20,6 @@ function @chroot() {
     arch-chroot /mnt /bin/bash -c "$script"
 }
 
-@phase "Erasing disk..."
-    @step "Suspending into memory..."
-    echo mem > /sys/power/state
-    @step "Setting disk password..."
-    hdparm --security-set-pass eins /dev/sda
-    @step "Applying Security Erase (Enhanced) to disk..."
-    hdparm --security-erase-enhanced eins /dev/sda
-
 @phase "Creating disk partitions..."
     @step "Creating new GPT partition table..."
         sgdisk -o /dev/sda
