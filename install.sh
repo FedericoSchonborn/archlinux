@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+DEVICE="${DEVICE:-/dev/sda}"
+
 function @phase() {
     local message="$1"
 
@@ -22,36 +24,36 @@ function @chroot() {
 
 @phase "Creating disk partitions..."
     @step "Creating new GPT partition table..."
-        sgdisk -o /dev/sda
+        sgdisk -o ${DEVICE}
 
     @step "Creating boot partition..."
-        sgdisk -n 0:0:+512MiB -t 0:ef00 /dev/sda
+        sgdisk -n 0:0:+512MiB -t 0:ef00 ${DEVICE}
 
     @step "Creating root partition..."
-        sgdisk -n 0:0:-4GiB -t 0:8300 /dev/sda
+        sgdisk -n 0:0:-4GiB -t 0:8300 ${DEVICE}
 
     @step "Creating swap partition..."
-        sgdisk -n 0:0:0 -t 0:8200 /dev/sda
+        sgdisk -n 0:0:0 -t 0:8200 ${DEVICE}
 
 @phase "Formatting disk partitions..."
     @step "Formatting boot partiton..."
-        mkfs.fat -F 32 /dev/sda1
+        mkfs.fat -F 32 ${DEVICE}1
 
     @step "Formatting root partition..."
-        mkfs.ext4 /dev/sda2
+        mkfs.ext4 ${DEVICE}2
 
     @step "Formatting swap partition..."
-        mkswap /dev/sda3
+        mkswap ${DEVICE}3
 
 @phase "Mounting disk partitions..."
     @step "Mounting root partition..."
-        mount --mkdir /dev/sda2 /mnt
+        mount --mkdir ${DEVICE}2 /mnt
 
     @step "Mounting boot partition..."
-        mount --mkdir /dev/sda1 /mnt/boot
+        mount --mkdir ${DEVICE}1 /mnt/boot
 
     @step "Activating swap partition..."
-        swapon /dev/sda3
+        swapon ${DEVICE}3
 
 @phase "Configuring package manager..."
     @step "Setting up mirror list..."
@@ -152,7 +154,7 @@ title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /intel-ucode.img
 initrd  /initramfs-linux.img
-options root=/dev/sda2 rw
+options root=${DEVICE}2 rw
 EOF'
         @chroot 'cat <<EOF > /boot/loader/entries/arch-fallback.conf
 title   Arch Linux (fallback initramfs)
